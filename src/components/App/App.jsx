@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Searchbar from '../Searchbar/Searchbar';
+import ImageGallery from '../ImageGallery/ImageGallery';
 import css from './App.module.css'
 
 class App extends Component {
@@ -7,6 +8,7 @@ class App extends Component {
     return (
       <div className={css.App}>
         <Searchbar />
+        <ImageGallery />
       </div>
     )
   }
