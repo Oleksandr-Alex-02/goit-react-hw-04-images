@@ -6,7 +6,6 @@ import css from './Searchbar.module.css'
 class Searchbar extends Component {
     state = {
         imageSearch: '',
-
     };
     handleNameChange = evt => {
         this.setState({ imageSearch: evt.target.value.toLowerCase() });
@@ -25,8 +24,6 @@ class Searchbar extends Component {
         this.props.onSubmit(this.state.imageSearch)
         console.log(this.state.imageSearch)
     };
-
-
 
     render() {
         return (

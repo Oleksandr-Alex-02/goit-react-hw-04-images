@@ -7,13 +7,9 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import 'react-toastify/dist/ReactToastify.css';
 import css from './App.module.css'
 
-// const axios = require('axios').default;
-
 class App extends Component {
   state = {
     imageSearch: '',
-
-
   }
 
   hendelOnSubmit = imageSearch => {
