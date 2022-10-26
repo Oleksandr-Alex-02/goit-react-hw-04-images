@@ -11,9 +11,8 @@ import css from './App.module.css'
 
 class App extends Component {
   state = {
-    // photo: null,
     imageSearch: '',
-    // page: 1,
+
 
   }
 

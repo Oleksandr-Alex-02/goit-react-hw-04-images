@@ -7,8 +7,8 @@ class ImageGallery extends Component {
         photo: null,
         error: null,
         loader: false,
+        page: 1,
     }
-
 
     async componentDidUpdate(prevProps, prevState) {
         const prevName = prevProps.imageSearch
@@ -20,12 +20,10 @@ class ImageGallery extends Component {
             this.setState({ loader: true })
 
             await fetch(`https://pixabay.com/api/?q=${nextName}&${page}&${key}&image_type=photo&orientation=horizontal&per_page=4`)
-                .then(res => res.json(''))
-                // .then(photo => photo.total === 0 ? this.setState({ photo }) : 0)
+                .then(res => res.json())
                 .then(photo => this.setState({ photo }))
                 .catch(error => this.setState({ error }))
                 .finally(this.setState({ loader: false }));
-
         }
     }
 
