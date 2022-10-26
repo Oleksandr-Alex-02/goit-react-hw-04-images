@@ -30,12 +30,13 @@ class ImageGallery extends Component {
     render() {
         const { loader, photo, error } = this.state
         const { nextName } = this.props.imageSearch
+
         return (
             <ul className={css.imageGallery}>
                 {error && <h1>немає такого {nextName}</h1>}
                 {loader && (<div>Загрузка....</div>)}
-                {photo && (<p>{photo.tags}</p>)}
-                <ImageGalleryItem />
+                {photo && (<ImageGalleryItem photo={photo} />)}
+
             </ul>
         )
     }
