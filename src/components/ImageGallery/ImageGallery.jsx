@@ -4,15 +4,17 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
 const ImageGallery = ({ photoName, onClick }) => (
-    <ul className={css.imageGallery}>
-        {photoName.map(photo => (
-            <ImageGalleryItem
-                key={photo.id}
-                photo={photo}
-                onClick={onClick}
-            />
-        ))}
-    </ul>
+    <div className='gallery'>
+        <ul className={css.imageGallery}>
+            {photoName.map(photo => (
+                <ImageGalleryItem
+                    key={photo.id}
+                    photo={photo}
+                    onClick={onClick}
+                />
+            ))}
+        </ul>
+    </div>
 );
 ImageGallery.propTypes = {
     photoName: PropTypes.array.isRequired,

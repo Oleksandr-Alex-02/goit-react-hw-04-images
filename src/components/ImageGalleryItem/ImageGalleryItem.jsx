@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import SimpleLightbox from 'simplelightbox';
 import css from './ImageGalleryItem.module.css'
 
 const ImageGalleryItem = ({

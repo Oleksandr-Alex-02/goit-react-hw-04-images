@@ -76,29 +76,25 @@ class App extends React.Component {
 
   render() {
     const {
-      photoName,
       page,
-      loading,
       photo,
       currentLargeImageURL,
       searchTotal,
+      loading,
     } = this.state;
     return (
       <section className={css.app}>
         <Searchbar onSubmit={this.handlerFormSubmit} page={page} />
 
-        {searchTotal === 0 ? (
-          <p >No "{photoName}" image was found</p>
-        ) : (
-          <ImageGallery
-            photoName={photo}
-            onClick={this.onOpenModalWithLargeImage}
-          />
-        )}
-
         {loading && <Loader />}
+        {searchTotal && <ImageGallery
+          photoName={photo}
+          onClick={this.onOpenModalWithLargeImage}
+        />
+        }
+
         {currentLargeImageURL && (
-          <Modal closeModal={this.onModalClose} url={currentLargeImageURL} />
+          < Modal closeModal={this.onModalClose} url={currentLargeImageURL} />
         )}
         {!loading && searchTotal > 12 && <Button onClick={this.hendlerMoreClick} />}
         <ToastContainer theme="" autoClose={2500} />
