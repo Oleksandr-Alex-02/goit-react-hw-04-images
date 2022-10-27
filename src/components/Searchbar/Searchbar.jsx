@@ -1,50 +1,49 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { AiOutlineSearch } from 'react-icons/ai';
 import { toast } from 'react-toastify';
-
-import css from './Searchbar.module.css'
 
 class Searchbar extends Component {
     state = {
-        imageSearch: '',
+        searchName: '',
     };
-    handleNameChange = evt => {
-        this.setState({ imageSearch: evt.target.value.toLowerCase() });
+    handleNameChange = e => {
+        this.setState({ searchName: e.currentTarget.value.toLowerCase() });
     };
-    onSubmitForm = evt => {
-        evt.preventDefault();
-        if (this.state.imageSearch.trim() === '') {
-            toast.error("Please enter what you want to search for", {
-                position: "top-center",
-                autoClose: 3000,
-                theme: "dark",
-            })
-            return;
+    handleSearch = e => {
+        e.preventDefault();
+
+        if (this.state.searchName.trim() === '') {
+            return toast.error('Please select an image');
         }
-        this.setState({ imageSearch: '' });
-        this.props.onSubmit(this.state.imageSearch)
+        this.props.onSubmit(this.state.searchName);
+        this.setState({ searchName: '' });
     };
 
     render() {
         return (
-            <header className={css.searchbar}>
-                <form className={css.searchbar__form} onSubmit={this.onSubmitForm}>
-                    <button className={css.searchbar__submit} type="submit">
-                        <span className="button-label">Search</span>
-                    </button>
-
+            <header className="">
+                <form className="form" onSubmit={this.handleSearch}>
                     <input
-                        className={css.searchbar__input}
+                        className="input"
                         type="text"
                         autoComplete="off"
                         autoFocus
                         placeholder="Search images and photos"
-                        value={this.state.imageSearch}
+                        value={this.state.searchName}
                         onChange={this.handleNameChange}
                     />
+                    <button type="submit" className="button">
+                        <AiOutlineSearch />
+                    </button>
                 </form>
             </header>
-        )
+        );
     }
 }
+
+Searchbar.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};
 
 export default Searchbar;

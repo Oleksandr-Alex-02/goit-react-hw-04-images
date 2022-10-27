@@ -1,16 +1,27 @@
-// import React, { Component } from 'react'
-// import css from './ImageGalleryItem.module.css'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const ImageGalleryItem = ({ photo }) => (
-
-    <div>
-        {photo.map(phot => (
-            < li >
-                console.log(photo)
-                <img src={phot.webformatURL} alt="" />
-            </li>
-        ))}
-    </div >
+const ImageGalleryItem = ({
+    photo: { webformatURL, tags, largeImageURL },
+    onClick,
+}) => (
+    <li className="galleryItem">
+        <img
+            className="galleryImg"
+            src={webformatURL}
+            alt={tags}
+            onClick={() => onClick(largeImageURL)}
+        />
+    </li>
 );
+
+ImageGalleryItem.propTypes = {
+    photo: PropTypes.shape({
+        webformatURL: PropTypes.string.isRequired,
+        tags: PropTypes.string.isRequired,
+        largeImageURL: PropTypes.string.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func.isRequired,
+};
 
 export default ImageGalleryItem;
