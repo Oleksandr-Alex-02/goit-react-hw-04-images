@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import css from './Modal.module.css'
 
 class Modal extends Component {
     state = {
@@ -28,8 +29,8 @@ class Modal extends Component {
     }
     render() {
         return (
-            <div className="overlay" onClick={this.handleBackdropClick}>
-                <div className="modal">
+            <div className={css.overlay} onClick={this.handleBackdropClick}>
+                <div className={css.modal}>
                     <img className='img' src={this.state.url} alt='' />
                 </div>
             </div>

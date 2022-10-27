@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import css from './ImageGalleryItem.module.css'
 
 const ImageGalleryItem = ({
     photo: { webformatURL, tags, largeImageURL },
     onClick,
 }) => (
-    <li className="galleryItem">
+    <li className={css.imageGalleryItem}>
         <img
-            className="galleryImg"
+            className={css.imageGalleryItem__image}
             src={webformatURL}
             alt={tags}
             onClick={() => onClick(largeImageURL)}

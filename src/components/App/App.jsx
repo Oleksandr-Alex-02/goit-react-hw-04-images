@@ -6,16 +6,18 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
+import css from './App.module.css';
 
 class App extends React.Component {
   state = {
-    photoName: '',
-    photo: [],
-    error: null,
     page: 1,
+    per_page: 12,
+    photo: [],
+    photoName: '',
     currentLargeImageURL: '',
     searchTotal: null,
-    loader: false,
+    loading: false,
+    error: null,
   };
 
   handlerFormSubmit = photoName => {
@@ -41,19 +43,22 @@ class App extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const prevName = prevState.photoName;
     const prevPage = prevState.page;
-    const { photoName, page } = this.state;
+    const { photoName, page, per_page } = this.state;
+    const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
 
     if (photoName !== prevName) {
       this.setState({ photo: [] });
     }
     if (prevName !== photoName || prevPage !== page) {
-      this.setState({ loader: true });
+      this.setState({ loading: true });
+
+      // setTimeout(() => {
       fetch(
-        `https://pixabay.com/api/?q=${photoName}&page=${page}&key=29451917-11054f18e01d02c62ffb7517a&image_type=photo&orientation=horizontal&per_page=12`
+        `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
       )
-        .then(response => {
-          if (response.ok) {
-            return response.json();
+        .then(res => {
+          if (res.ok) {
+            return res.json();
           }
           return Promise.reject(new Error());
         })
@@ -64,7 +69,8 @@ class App extends React.Component {
           }))
         )
         .catch(error => this.setState({ error }))
-        .finally(this.setState({ loader: false }));
+        .finally(this.setState({ loading: false }));
+      // }, 2000);
     }
   }
 
@@ -72,20 +78,17 @@ class App extends React.Component {
     const {
       photoName,
       page,
-      loader,
+      loading,
       photo,
       currentLargeImageURL,
       searchTotal,
     } = this.state;
     return (
-      <section className="section">
-        <h1 className="headerTitle">
-          Photo <span>Gallery</span>
-        </h1>
+      <section className={css.app}>
         <Searchbar onSubmit={this.handlerFormSubmit} page={page} />
 
         {searchTotal === 0 ? (
-          <p className="error">No "{photoName}" image was found</p>
+          <p >No "{photoName}" image was found</p>
         ) : (
           <ImageGallery
             photoName={photo}
@@ -93,12 +96,12 @@ class App extends React.Component {
           />
         )}
 
-        {loader && <Loader />}
+        {loading && <Loader />}
         {currentLargeImageURL && (
           <Modal closeModal={this.onModalClose} url={currentLargeImageURL} />
         )}
-        {searchTotal > 12 && <Button onClick={this.hendlerMoreClick} />}
-        <ToastContainer theme="dark" autoClose={3000} />
+        {!loading && searchTotal > 12 && <Button onClick={this.hendlerMoreClick} />}
+        <ToastContainer theme="" autoClose={2500} />
       </section>
     );
   }

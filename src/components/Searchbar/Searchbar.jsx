@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { AiOutlineSearch } from 'react-icons/ai';
+import { MdOutlineImageSearch } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
     state = {
@@ -10,11 +11,12 @@ class Searchbar extends Component {
     handleNameChange = e => {
         this.setState({ searchName: e.currentTarget.value.toLowerCase() });
     };
-    handleSearch = e => {
+    onSubmit = e => {
         e.preventDefault();
 
         if (this.state.searchName.trim() === '') {
-            return toast.error('Please select an image');
+            toast.error('Please select an image');
+            return;
         }
         this.props.onSubmit(this.state.searchName);
         this.setState({ searchName: '' });
@@ -22,10 +24,10 @@ class Searchbar extends Component {
 
     render() {
         return (
-            <header className="">
-                <form className="form" onSubmit={this.handleSearch}>
+            <header className={css.searchbar}>
+                <form className={css.searchForm} onSubmit={this.onSubmit}>
                     <input
-                        className="input"
+                        className={css.searchForm__input}
                         type="text"
                         autoComplete="off"
                         autoFocus
@@ -33,8 +35,8 @@ class Searchbar extends Component {
                         value={this.state.searchName}
                         onChange={this.handleNameChange}
                     />
-                    <button type="submit" className="button">
-                        <AiOutlineSearch />
+                    <button type="submit" className={css.searchForm__button}>
+                        <MdOutlineImageSearch />
                     </button>
                 </form>
             </header>
