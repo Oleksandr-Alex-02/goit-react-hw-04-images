@@ -15,11 +15,12 @@ class Searchbar extends Component {
         e.preventDefault();
 
         if (this.state.searchName.trim() === '') {
-            toast.error('Please select an image');
+            toast.error('Please select an image', {
+                theme: " "
+            });
             return;
         }
         this.props.onSubmit(this.state.searchName);
-        this.setState({ searchName: '' });
     };
 
     render() {

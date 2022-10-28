@@ -1,9 +1,10 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
-import Button from '../Button/Button';
+import Button from '../Button';
 import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
 import css from './App.module.css';
@@ -21,7 +22,14 @@ class App extends React.Component {
   };
 
   handlerFormSubmit = photoName => {
-    this.setState({ photoName, page: 1 });
+    if (photoName !== this.state.photoName) {
+      this.setState({ photoName, page: 1 });
+      this.setState({ photo: [] })
+    } else {
+      toast.info(`Іorry image ${photoName} not found`, {
+        theme: "colored",
+      });
+    }
   };
 
   onOpenModalWithLargeImage = url => {
@@ -86,7 +94,6 @@ class App extends React.Component {
       <section className={css.app}>
         <Searchbar onSubmit={this.handlerFormSubmit} page={page} />
 
-        {loading && <Loader />}
         {searchTotal && <ImageGallery
           photoName={photo}
           onClick={this.onOpenModalWithLargeImage}
@@ -96,8 +103,9 @@ class App extends React.Component {
         {currentLargeImageURL && (
           < Modal closeModal={this.onModalClose} url={currentLargeImageURL} />
         )}
+        {loading && <Loader />}
         {!loading && searchTotal > 12 && <Button onClick={this.hendlerMoreClick} />}
-        <ToastContainer theme="" autoClose={2500} />
+        <ToastContainer autoClose={2500} />
       </section>
     );
   }
