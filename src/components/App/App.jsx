@@ -25,11 +25,14 @@ class App extends React.Component {
     if (photoName !== this.state.photoName) {
       this.setState({ photoName, page: 1 });
       this.setState({ photo: [] })
-    } else {
-      toast.info(`Іorry image ${photoName} not found`, {
+      return;
+    }
+    else {
+      toast.info(`Sorry image ${photoName} not found`, {
         theme: "colored",
       });
     }
+
   };
 
   onOpenModalWithLargeImage = url => {
@@ -94,7 +97,7 @@ class App extends React.Component {
       <section className={css.app}>
         <Searchbar onSubmit={this.handlerFormSubmit} page={page} />
 
-        {searchTotal && <ImageGallery
+        {photo && <ImageGallery
           photoName={photo}
           onClick={this.onOpenModalWithLargeImage}
         />
