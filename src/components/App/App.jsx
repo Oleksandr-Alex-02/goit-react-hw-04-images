@@ -25,6 +25,7 @@ class App extends React.Component {
     if (photoName !== this.state.photoName) {
       this.setState({ photoName, page: 1 });
       this.setState({ photo: [] })
+      // toast.success(`We found it for you ${photoName}`)
       return;
     }
     else {
