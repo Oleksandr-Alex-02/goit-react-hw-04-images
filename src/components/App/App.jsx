@@ -1,4 +1,3 @@
-import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -8,23 +7,23 @@ import Button from '../Button';
 import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
 import css from './App.module.css';
+import { useState } from 'react';
 
-class App extends React.Component {
-  state = {
-    page: 1,
-    per_page: 12,
-    photo: [],
-    photoName: '',
-    currentLargeImageURL: '',
-    searchTotal: null,
-    loading: false,
-    error: null,
-  };
 
-  handlerFormSubmit = photoName => {
-    if (photoName !== this.state.photoName) {
-      this.setState({ photoName, page: 1 });
-      this.setState({ photo: [] })
+export default function App() {
+  const [page, setPage] = useState(1);
+  const [per_page, setPer_page] = useState(12);
+  const [photo, setPhoto] = useState([]);
+  const [photoName, setPhotoName] = useState('');
+  const [currentLargeImageURL, setCurrentLargeImageURL] = useState('');
+  const [searchTotal, setSarchTotal] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handlerFormSubmit = () => {
+    if (!photoName) {
+      setPhotoName({ photoName, page: 1 });
+      setPhoto({ photo: [] })
       // toast.success(`We found it for you ${photoName}`)
       return;
     }
@@ -36,82 +35,76 @@ class App extends React.Component {
 
   };
 
-  onOpenModalWithLargeImage = url => {
-    this.setState({
+  const onOpenModalWithLargeImage = url => {
+    setCurrentLargeImageURL({
       currentLargeImageURL: url,
     });
   };
 
-  onModalClose = () => {
-    this.setState({
+  const onModalClose = () => {
+    setCurrentLargeImageURL({
       currentLargeImageURL: '',
     });
   };
 
-  hendlerMoreClick = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+  const hendlerMoreClick = () => {
+    setPage(prevState => ({ page: prevState.page + 1 }));
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevName = prevState.photoName;
-    const prevPage = prevState.page;
-    const { photoName, page, per_page } = this.state;
-    const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
+  return (
+    <section className={css.app}>
+      <Searchbar onSubmit={handlerFormSubmit} page={page} />
 
-    if (photoName !== prevName) {
-      this.setState({ photo: [] });
-    }
-    if (prevName !== photoName || prevPage !== page) {
-      this.setState({ loading: true });
+      {photo && <ImageGallery
+        photoName={photo}
+        onClick={onOpenModalWithLargeImage}
+      />
+      }
 
-      // setTimeout(() => {
-      fetch(
-        `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
-      )
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(new Error());
-        })
-        .then(photo =>
-          this.setState(prevState => ({
-            photo: [...prevState.photo, ...photo.hits],
-            searchTotal: photo.total,
-          }))
-        )
-        .catch(error => this.setState({ error }))
-        .finally(this.setState({ loading: false }));
-      // }, 2000);
-    }
-  }
-
-  render() {
-    const {
-      page,
-      photo,
-      currentLargeImageURL,
-      searchTotal,
-      loading,
-    } = this.state;
-    return (
-      <section className={css.app}>
-        <Searchbar onSubmit={this.handlerFormSubmit} page={page} />
-
-        {photo && <ImageGallery
-          photoName={photo}
-          onClick={this.onOpenModalWithLargeImage}
-        />
-        }
-
-        {currentLargeImageURL && (
-          < Modal closeModal={this.onModalClose} url={currentLargeImageURL} />
-        )}
-        {loading && <Loader />}
-        {!loading && searchTotal > 12 && <Button onClick={this.hendlerMoreClick} />}
-        <ToastContainer autoClose={2500} />
-      </section>
-    );
-  }
+      {currentLargeImageURL && (
+        < Modal closeModal={onModalClose} url={currentLargeImageURL} />
+      )}
+      {loading && <Loader />}
+      {!loading && searchTotal > 12 && <Button onClick={hendlerMoreClick} />}
+      <ToastContainer autoClose={2500} />
+    </section>
+  );
 }
-export default App;
+
+
+// class App extends React.Component {
+
+//   componentDidUpdate(prevProps, prevState) {
+//     const prevName = prevState.photoName;
+//     const prevPage = prevState.page;
+//     const { photoName, page, per_page } = this.state;
+//     const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
+
+//     if (photoName !== prevName) {
+//       this.setState({ photo: [] });
+//     }
+//     if (prevName !== photoName || prevPage !== page) {
+//       this.setState({ loading: true });
+
+//       // setTimeout(() => {
+//       fetch(
+//         `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
+//       )
+//         .then(res => {
+//           if (res.ok) {
+//             return res.json();
+//           }
+//           return Promise.reject(new Error());
+//         })
+//         .then(photo =>
+//           this.setState(prevState => ({
+//             photo: [...prevState.photo, ...photo.hits],
+//             searchTotal: photo.total,
+//           }))
+//         )
+//         .catch(error => this.setState({ error }))
+//         .finally(this.setState({ loading: false }));
+//       // }, 2000);
+//     }
+//   }
+

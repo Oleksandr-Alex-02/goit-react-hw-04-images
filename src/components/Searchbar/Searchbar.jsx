@@ -1,5 +1,4 @@
-// import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { MdOutlineImageSearch } from 'react-icons/md';
 import { toast } from 'react-toastify';
@@ -46,6 +45,6 @@ export default function Searchbar({ onSubmit }) {
 }
 
 
-// Searchbar.propTypes = {
-//     onSubmit: PropTypes.func.isRequired,
-// };
+Searchbar.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};
