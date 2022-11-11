@@ -1,52 +1,51 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { MdOutlineImageSearch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import css from './Searchbar.module.css';
 
-class Searchbar extends Component {
-    state = {
-        searchName: '',
-    };
-    handleNameChange = e => {
-        this.setState({ searchName: e.currentTarget.value.toLowerCase() });
-    };
-    onSubmit = e => {
-        e.preventDefault();
 
-        if (this.state.searchName.trim() === '') {
+export default function Searchbar({ onSubmit }) {
+    const [searchName, setSearchName] = useState('');
+
+    const handleNameChange = evt => {
+        setSearchName(evt.currentTarget.value.toLowerCase());
+    };
+
+    const onSubmitVeleu = evt => {
+        evt.preventDefault();
+
+        if (searchName.trim('') === '') {
             toast.error('Please select an image', {
                 theme: " "
             });
             return;
         }
-        this.props.onSubmit(this.state.searchName);
+        onSubmit(searchName);
     };
 
-    render() {
-        return (
-            <header className={css.searchbar}>
-                <form className={css.searchForm} onSubmit={this.onSubmit}>
-                    <input
-                        className={css.searchForm__input}
-                        type="text"
-                        autoComplete="off"
-                        autoFocus
-                        placeholder="Search images and photos"
-                        value={this.state.searchName}
-                        onChange={this.handleNameChange}
-                    />
-                    <button type="submit" className={css.searchForm__button}>
-                        <MdOutlineImageSearch />
-                    </button>
-                </form>
-            </header>
-        );
-    }
+    return (
+        <header className={css.searchbar}>
+            <form className={css.searchForm} onSubmit={onSubmitVeleu}>
+                <input
+                    className={css.searchForm__input}
+                    type="text"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search images and photos"
+                    value={searchName}
+                    onChange={handleNameChange}
+                />
+                <button type="submit" className={css.searchForm__button}>
+                    <MdOutlineImageSearch />
+                </button>
+            </form>
+        </header>
+    );
 }
 
-Searchbar.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-};
 
-export default Searchbar;
+// Searchbar.propTypes = {
+//     onSubmit: PropTypes.func.isRequired,
+// };
