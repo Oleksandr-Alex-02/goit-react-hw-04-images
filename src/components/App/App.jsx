@@ -7,7 +7,7 @@ import Button from '../Button';
 import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
 import css from './App.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 export default function App() {
@@ -51,11 +51,41 @@ export default function App() {
     setPage(prevState => ({ page: prevState.page + 1 }));
   };
 
+  useEffect(() => {
+    const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
+
+    // if (!photoName) {
+    //   setPhoto(photo)
+    // };
+    if (!photoName || !page) {
+      setLoading(true)
+    };
+
+    fetch(
+      `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
+    )
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(new Error());
+      })
+      .then(photo =>
+        setPhoto(prevState => ({
+          photo: [...prevState.photo, ...photo.hits],
+          searchTotal: photo.total,
+        }))
+      )
+      .catch(error => setError(error))
+      .finally(setLoading(false))
+
+  }, [page, per_page, photo, photoName]);
+
   return (
     <section className={css.app}>
       <Searchbar onSubmit={handlerFormSubmit} page={page} />
 
-      {photo && <ImageGallery
+      {!photo && <ImageGallery
         photoName={photo}
         onClick={onOpenModalWithLargeImage}
       />
@@ -78,32 +108,32 @@ export default function App() {
 //     const prevName = prevState.photoName;
 //     const prevPage = prevState.page;
 //     const { photoName, page, per_page } = this.state;
-//     const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
+    // const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
 
-//     if (photoName !== prevName) {
-//       this.setState({ photo: [] });
-//     }
-//     if (prevName !== photoName || prevPage !== page) {
-//       this.setState({ loading: true });
+    // if (photoName !== prevName) {
+    //   this.setState({ photo: [] });
+    // }
+    // if (prevName !== photoName || prevPage !== page) {
+    //   this.setState({ loading: true });}
 
 //       // setTimeout(() => {
-//       fetch(
-//         `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
-//       )
-//         .then(res => {
-//           if (res.ok) {
-//             return res.json();
-//           }
-//           return Promise.reject(new Error());
-//         })
-//         .then(photo =>
-//           this.setState(prevState => ({
-//             photo: [...prevState.photo, ...photo.hits],
-//             searchTotal: photo.total,
-//           }))
-//         )
-//         .catch(error => this.setState({ error }))
-//         .finally(this.setState({ loading: false }));
+      // fetch(
+      //   `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
+      // )
+      //   .then(res => {
+      //     if (res.ok) {
+      //       return res.json();
+      //     }
+      //     return Promise.reject(new Error());
+      //   })
+      //   .then(photo =>
+      //     this.setState(prevState => ({
+      //       photo: [...prevState.photo, ...photo.hits],
+      //       searchTotal: photo.total,
+      //     }))
+      //   )
+      //   .catch(error => this.setState({ error }))
+      //   .finally(this.setState({ loading: false }));
 //       // }, 2000);
 //     }
 //   }

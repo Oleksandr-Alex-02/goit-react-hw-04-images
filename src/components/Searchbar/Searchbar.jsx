@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineImageSearch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import css from './Searchbar.module.css';
@@ -23,6 +23,8 @@ export default function Searchbar({ onSubmit }) {
         }
         onSubmit(searchName);
     };
+
+
 
     return (
         <header className={css.searchbar}>
