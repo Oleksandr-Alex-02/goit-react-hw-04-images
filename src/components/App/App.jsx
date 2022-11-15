@@ -8,6 +8,7 @@ import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
 import css from './App.module.css';
 import { useEffect, useState } from 'react';
+const axios = require('axios').default;
 
 
 export default function App() {
@@ -22,8 +23,8 @@ export default function App() {
 
   const handlerFormSubmit = () => {
     if (!photoName) {
-      setPhotoName({ photoName, page: 1 });
-      setPhoto({ photo: [] })
+      setPhotoName({ photoName });
+      // setPhoto({ photo: [] })
       // toast.success(`We found it for you ${photoName}`)
       return;
     }
@@ -51,35 +52,34 @@ export default function App() {
     setPage(prevState => ({ page: prevState.page + 1 }));
   };
 
-  useEffect(() => {
-    const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
+  // useEffect(() => {
+  //   const key = 'key=29453019-5a69b6c7b2f01a070c80deb0c'
+  //   const controller = new AbortController();
 
-    // if (!photoName) {
-    //   setPhoto(photo)
-    // };
-    if (!photoName || !page) {
-      setLoading(true)
-    };
+  //   async function dasd() {
 
-    fetch(
-      `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`
-    )
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(new Error());
-      })
-      .then(photo =>
-        setPhoto(prevState => ({
-          photo: [...prevState.photo, ...photo.hits],
-          searchTotal: photo.total,
-        }))
-      )
-      .catch(error => setError(error))
-      .finally(setLoading(false))
+  //     try {
+  //       const res = await axios.get(
+  //         `https://pixabay.com/api/?q=${photoName}&page=${page}&${key}&image_type=photo&orientation=horizontal&per_page=${per_page}`,
+  //         {
+  //           signal: controller.signal
+  //         }
+  //       );
+  //       setPhoto(res)
+  //     }
+  //     catch (error) {
+  //       setError(error)
+  //     }
+  //     // finally(setLoading(false))
+  //   }
 
-  }, [page, per_page, photo, photoName]);
+  //   dasd();
+
+  //   return () => {
+  //     controller.abort()
+  //   }
+
+  // }, [page, per_page, photoName]);
 
   return (
     <section className={css.app}>
